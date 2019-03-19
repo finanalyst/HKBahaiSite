@@ -1,5 +1,9 @@
 ![](devmeet3.jpg)
-
-[div][center][size=x-large][color=#f88d0f]**祈祷会**[/color][/size][/center][/div]
-
+[div]
+[center]
+[size=x-large]
+[color=#f88d0f]**祈祷会**[/color]
+[/size]
+[/center]
+[/div]
 ![](devmeet4.jpg)
