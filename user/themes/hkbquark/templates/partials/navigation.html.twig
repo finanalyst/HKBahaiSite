@@ -1,0 +1,31 @@
+<ul {{ tree ? 'class="tree"' : '' }}>
+    {% if mobile %}
+        {% include 'partials/langswitcher.html.twig' with { mobile: mobile } %}
+    {% endif %}
+    {% set def_active = 1 %}
+    {% for p in page.children.visible %}
+        {% if p.active %}{% def_active = loop.index %}
+    {% endfor %}
+    {% for p in page.children.visible %}
+        {% set active_page = ( def_active == loop.index ) ? 'active' : '' %}
+        <li>
+            <a href="{{ p.url }}" class="{{ active_page }}">
+                {{ p.menu }}
+            </a>
+        </li>
+    {% endfor %}
+    {% if logstat and config.plugins.login.enabled and grav.user.username %}
+        <div class="login-status-wrapper">
+            <a class="logout" href="{{ uri.addNonce((base_url_relative ~ uri.path)|trim('/') ~ '/task' ~ config.system.param_sep ~ 'login.logout', 'logout-form', 'logout-nonce')|e }}">
+                <i class="fa fa-user fa-2x"></i>
+            </a>
+            <div class="login-status-info">
+                {{ grav.user.fullname ?: grav.user.username }}
+                <br>{{ 'PLUGIN_LOGIN.BTN_LOGOUT'|t }}
+            </div>
+        </div>
+    {% endif %}
+    {% if not mobile %}
+        {% include 'partials/langswitcher.html.twig' with { mobile: mobile } %}
+    {% endif %}
+</ul>

@@ -1,0 +1,53 @@
+{% set sectId = 'horiz' ~ page.folder|replace({'_': '', '.':'', "'":''}) %}
+{% set backImg = page.media.images|first  ?: page.find('/images').media['default.jpg'] %}
+{% set nPages = 1 %}
+<div id="{{ sectId }}" style="background-image: url('{{ backImg.url }}'); ">
+    <div id="owl{{ sectId }}" class="owl-carousel owl-theme">
+        {% for pg in page.collection %}
+            <div class="hkb-slide">
+                <div class="hkb-slide-inner{{ pg.header.image or pg.header.style.image?'-img':'' }}"{% if pg.header.style.bgcolor or pg.header.style.color %}
+                        style="background-color: {{ pg.header.style.bgcolor?:'#f0f8ff59' }}; color: {{ pg.header.style.color?:'bisque' }}"
+                        {% endif %}>
+                    {{ pg.media[pg.header.image]  }}
+                    {{ pg.content }}
+                </div>
+            </div>
+        {% if loop.last %}{% set nPages = loop.index %}{% endif %}
+        {% endfor %}
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+    var owl = $('#owl{{ sectId }}');
+    var incr;
+    var slide;
+    var slides;
+    var startItem;
+    owl.owlCarousel({
+        items: 1,
+        loop: true,
+        onInitialized: getIncr,
+        {% if backImg %}onTranslated: moveBackGround,
+        {% endif %}dots: false,
+        nav: true,
+        navText: [ '<a><span class="fa fa-chevron-left fa-lg"></a>' , '<a><span class="fa fa-chevron-right fa-lg"></a>' ],
+        navContainerClass: 'hkb-nav',
+        navClass: [ 'hkb-prev' , 'hkb-next' ],
+        autoHeight: false
+    });{% if backImg %}
+    function getIncr(event) {
+        incr = {{ backImg.width / backImg.height }} * ( $(window).height() - 2.3 * parseInt($('html').css('font-size')) ) - $(window).width();
+        incr = (incr > 0) ? incr  / {{ nPages > 1 ? nPages - 1 : 1 }} : 0;
+        slide = 0;
+        slides = {{ nPages }};
+        startItem = event.item.index;
+    };
+    function moveBackGround( event ) {
+        curIndex = event.item.index;
+        slide = curIndex - startItem;
+        if ( slide < 0 ) slide = slides + slide;
+        else if ( slide >= slides ) slide = slides - slide; 
+        $('#{{ sectId }}').css('background-position', 'left -' + (incr * slide) + 'px center' );
+    };{% endif %}
+});
+</script>

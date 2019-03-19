@@ -1,0 +1,5 @@
+![](devmeet1.jpg)
+
+[div][center][size=x-large][color=#f88d0f]**祈祷会**[/color][/size][/center][/div]
+
+![](devmeet2.jpg)

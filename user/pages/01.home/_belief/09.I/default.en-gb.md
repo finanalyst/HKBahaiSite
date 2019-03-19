@@ -1,0 +1,1 @@
+This line of succession, referred to as the Covenant, went from Bahá’u’lláh to His Son, ‘Abdu’l-Bahá, and then from ‘Abdu’l-Bahá to His grandson, Shoghi Effendi, and the Universal House of Justice, ordained by Bahá’u’lláh. A Bahá’í accepts the divine authority of the Báb and Bahá’u’lláh and of these appointed successors.

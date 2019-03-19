@@ -1,0 +1,30 @@
+<div id="hkb_lang_btn"{% if mobile %} class="mobile"{% endif %}>
+    {% if not mobile %}<img src="{{theme_url}}/images/langswitch.svg"></img>{% endif %}
+    <ul class="hkb_langswitcher{% if mobile %} mobile{% endif %}">
+    {% set p_route = uri.url(true) %}
+    {% set p_lang = page.language %}
+    {% for lng in grav.language.getLanguages %}
+        <li>
+            <a href="{{ p_route }}{{p_lang ? '/' ~ lng : '' }}" class="external {{ lng == p_lang ? 'active':'' }}">
+                <span>{{grav.language.getTranslation(lng,'LANG_NAME') }}</span>
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+<script>
+$('.hkb_langswitcher>li>a').click(function(){
+    var fromTop=0;
+    var windowEdgeAt = $(window).scrollTop();
+    var sectMark = '#';
+    $('#body-wrapper>section.hkb-container>section').each( function(i, elem ) {
+        fromTop += $(elem).outerHeight();
+        if ( windowEdgeAt < fromTop) {
+            sectMark += elem.id;
+            return false;
+        };
+    });
+    newHref = $(this).attr('href').replace(/\#.+$/,'');
+    $(this).attr('href', newHref + sectMark);
+});
+</script>

@@ -1,0 +1,10 @@
+<div>
+    <div class="slider">
+      {% for im in page.find(page.collection.first.route ~ '/' ~ grav.language.getActive).media.images() %}
+        <img src="{{ im.url}}"
+          {% if loop.index0 == 0 %} class="center"
+          {% elseif loop.index0 == 1 %} class="right"
+          {% endif %} />
+      {% endfor %}
+    </div>
+</div>

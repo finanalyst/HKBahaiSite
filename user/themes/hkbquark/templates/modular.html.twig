@@ -1,0 +1,87 @@
+{% extends 'partials/base.html.twig' %}
+
+{% set show_onpage_menu = header.onpage_menu == true or header.onpage_menu is null %}
+
+{% block javascripts %}
+    {% if show_onpage_menu %}
+        {% do assets.add('theme://js/singlepagenav.min.js') %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block bottom %}
+    {{ parent() }}
+    {% if show_onpage_menu %}
+        <script>
+        // singlePageNav initialization & configuration
+        // adjust header if at top. Normal is 2.3rem, unscrolled is 4rem
+        $('ul.navigation').singlePageNav({
+            offset: $('#header').outerHeight()  * 2.3 / 4,
+            filter: ':not(.external)',
+            updateHash: true,
+            currentClass: 'active',
+            beforeStart: function () {
+            	adjustTopFlag = $(self).scrollTop() <= 75;
+            },
+            onComplete: function () {
+            	topPos = $(self).scrollTop();
+                if ( topPos <= 75 ) { $(self).scrollTop( topPos - this.offset * 4 / 2.3 ); }
+                if ( adjustTopFlag ) { $(self).scrollTop( topPos + this.offset * (4 /2.3 - 1) ); }
+            }
+        });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block header_navigation %}
+    {% set def_active = 1 %}
+    {% for p in page.children.visible %}
+        {% if p.active %}{% set def_active = loop.index %}{% endif %}
+    {% endfor %}
+    {% if show_onpage_menu %}
+        <ul class="navigation">
+        {% for module in page.collection() %}
+            {% set current_module = (def_active == loop.index ) ? 'active' : '' %}
+            <li><a class="{{ current_module }}" href="#{{ 'section_' ~ loop.index }}">{{ module.menu }}</a></li>
+        {% endfor %}
+        {% if config.plugins.login.enabled and grav.user.username %}
+            <div class="login-status-wrapper">
+                <a class="logout" href="{{ uri.addNonce((base_url_relative ~ uri.path)|trim('/') ~ '/task' ~ config.system.param_sep ~ 'login.logout', 'logout-form', 'logout-nonce')|e }}">
+                    <i class="fa fa-user fa-2x"></i>
+                </a>
+                <div class="login-status-info">
+                    {{ grav.user.fullname ?: grav.user.username }}
+                    <br>{{ 'PLUGIN_LOGIN.BTN_LOGOUT'|t }}
+                </div>
+            </div>
+        {% endif %}
+        {% include 'partials/langswitcher.html.twig' with { mobile: false } %}
+        </ul>
+    {% else %}
+        {{  parent() }}
+    {% endif %}
+{% endblock %}
+{% block mobile_navigation %}
+    {% if show_onpage_menu %}
+    {% include 'partials/langswitcher.html.twig' with { mobile: true } %}
+        <ul class="tree">
+        {% for module in page.collection() %}
+            {% set current_module = (def_active == loop.index) ? 'active' : '' %}
+            <li><a class="{{ current_module }}" href="#{{ 'section_' ~ loop.index }}">{{ module.menu }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        {{  parent() }}
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% for module in page.collection() %}
+        <section id="{{ 'section_' ~ loop.index }}" class="hkb-horizontal{% if not loop.first %} scrolled{% endif  %}">
+            {{ module.content }}
+            {% if not loop.last %}
+            <div class="hkb-next-page">
+                <a href="#{{ 'section_' ~ ( loop.index + 1 ) }}"><span class="fa fa-chevron-down"></span></a>
+            </div>{% endif %}
+        </section>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,377 @@
+@import 'spectre/variables';
+@import 'spectre/mixins';
+
+@import 'theme/variables';
+@import 'theme/mixins';
+
+//@import 'css3-mixins';
+
+// langswitch colours
+$hkb-lang: white;
+$hkb-lang-back: rgba(214, 81, 60, 0.9);
+$hkb-lang-back-hover: rgba(173, 44, 112, 0.9);
+$hkb-lang-active: rgb(223, 177, 1);
+$hkb-lang-border: rgba(173, 44, 112, 0.9);
+$overmap: 1010; // to overlap the map
+
+// Header Overrides
+@include breakpoint(md) {
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1rem;
+    }
+    h1, .h1 {
+      font-size: 1.6rem;
+    }
+    h2, .h2 {
+      font-size: 1.4rem;
+    }
+}
+
+.header-fixed #header {
+    z-index: $overmap;
+
+    &.scrolled .logo img {
+        width: 3.2em;
+        transition: width 0.5s ease;
+    }
+    .logo img {
+        width: 5.8em;
+        border-radius: 15px;
+        transition: width 0.5s ease ;
+        margin-top: 0.3em;
+        margin-left: 0.1em
+    }
+}
+
+// Icon Tweaks
+i.fa {
+  &.fa-wrench, &.fa-wrench-o {
+      &.pulse, &.twist {
+          color: #079
+      }
+  }
+}
+// Twist Animation
+.twist {
+  animation-name: twist_animation;
+  animation-duration: 10000ms;
+  transform-origin: 70% 30%;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes twist_animation {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(0); }
+  40% { transform: rotate(60deg); }
+  50% { transform: rotate(0); }
+  60% { transform: rotate(0); }
+  75% { transform: rotate(90deg); }
+  90% { transform: rotate(0); }
+  100% { transform: rotate(0); }
+}
+
+// overlay so that it works in modular too.
+#overlay.open {
+    width: 70%;
+    .overlay-menu { overflow-y: auto; }
+}
+#toggle.active { left: 59%; } // just a bit less than width above
+
+// new container
+.hkb-container {
+    margin: 0;
+    padding: 0;
+}
+section.section { padding-left: 0; padding-right: 0;}
+
+.hkb-sm-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90vw;
+}
+
+div.hkb-next-page {
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    a {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 1.5rem 1.5rem 0 0;
+        border-bottom: currentcolor none 0;
+        text-align: center;
+        text-decoration: none;
+        color: #f55d44;
+        z-index: 510;
+        background-color: lightgreen;
+        &:hover {
+            background-color: aliceblue;
+        }
+        span {
+            transform: translateY(0.25rem);
+        }
+    }
+}
+
+// adjust owl carousel css to place slide content in centre of screen
+.owl-item {
+    display: flex;
+    justify-content: center;
+}
+
+.hkb-nav {
+    position: absolute;
+    top: 50vh;
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    z-index: 10;
+    .hkb-prev a ,  .hkb-next a {
+        width: 2rem;
+        height: 2rem;
+        position: absolute;
+        border-radius: 1.5rem;
+        line-height: 2rem;
+        span {
+            transform: translateX(0.4rem);
+        }
+        &:hover {
+            text-decoration: none;
+            background-color: aliceblue;
+        }
+    }
+    .hkb-prev a {
+        left: 1em;
+        color: #398dd1;
+        background-color:  #ffd600;
+    }
+    .hkb-next a {
+        right: 1em;
+        color: #ffd600;
+        background-color: #398dd1;
+    }
+}
+
+.hkb-horizontal {
+    background-position: left 0px center;
+    background-size: auto calc( 100vh - 4rem );
+    background-clip: padding-box;
+    height: calc( 100vh - 4rem );
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    img {
+        max-height: calc( 80vh - 4rem );
+    }
+    div {
+        background-position: left 0px center;
+        transition: background-position 3s linear;
+    }
+    &.scrolled {
+        height: calc( 100vh - 2.3rem );
+        background-size: auto calc( 100vh - 2.3rem );
+        img {
+            max-height: calc( 80vh - 2.3rem );
+        }
+    }
+    .slider { margin-top: 0; } // overide top set by sliderstyle
+}
+
+.owl-stage .owl-item .hkb-slide {
+    height: calc( 100vh - 2.3rem );
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .hkb-slide-inner {
+        width: 60vw;
+        background-color: #f0f8ff59;
+        padding: 2rem;
+        border-radius: 10px;
+        color: bisque;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .hkb-slide-inner-img {
+        padding: 3.5rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        max-height: calc( 100vh - 2.3rem );
+        img {
+            width: unset;
+        }
+        div {
+            width: 25%;
+        }
+        @include breakpoint(md) {
+            video {
+                width: 90vw;
+                box-sizing: content-box;
+                ::before, ::after {
+                    box-sizing: content-box;
+                }
+            }
+            p {
+                margin: 0;
+            }
+        }
+    }
+}
+
+.map-body, .map-address {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: x-large;
+}
+
+.hkb-form {
+    width: 80vw;
+    margin: auto;
+    padding-top: 2rem;
+}
+
+// mobile Tweaks
+.mobile-menu {
+    z-index: $overmap + 10 ;
+    .button_container { z-index: $overmap +10 ; }
+}
+.mobile-container {
+    z-index: $overmap;
+}
+.mobile-logo img {
+    width: 5.8rem;
+}
+
+// language switcher
+div#hkb_lang_btn {
+    &.mobile {
+        display: inline-flex;
+    }
+    margin: 0 15px;
+    padding: 0;
+    transform: translateY(3px);
+    cursor: pointer;
+    white-space: nowrap;
+    img {
+        width: 25px;
+        max-width: inherit;
+        vertical-align: middle;
+        transform: translateY(3px);
+    }
+    &:hover ul.hkb_langswitcher {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 1s ease;
+    }
+    ul.hkb_langswitcher {
+        flex-direction: column;
+        justify-content: space-around;
+        border: 2px solid $hkb-lang-border;
+        z-index: 10;
+        border-radius: 10px;
+        font-weight: bold;
+        list-style: none;
+        padding: 5px;
+        margin: 2px;
+        visibility: hidden;
+        opacity: 0;
+        &:not(.mobile) {
+            transform: translate(-50px,-20px);
+        }
+        &.mobile {
+            flex-direction: row;
+            visibility: visible;
+            opacity: 1;
+            padding: 1rem 0;
+            li {
+                line-height: 15px;
+                margin: 0 0.1rem;
+                a {
+                    padding: 0.1rem;
+                }
+            }
+        }
+        li {
+            line-height: 20px;
+            display: inline-block;
+            margin: 5px;
+            a {
+                background-color: $hkb-lang-back;
+                padding: 5px 10px 5px 10px;
+                border: 3px solid transparent;
+                border-radius: 10px;
+                text-decoration: none;
+                margin: 0;
+                span {
+                    color: $hkb-lang;
+                    text-align: center;
+                }
+                &:hover {
+                    background-color: $hkb-lang-back-hover;
+                    border: 3px solid $hkb-lang-active;
+                }
+                &.active span {
+                    color: $hkb-lang-active;
+                }
+            }
+        }
+    }
+}
+// make login user logout an icon with tooltip
+.login-status-wrapper {
+    position: relative;
+    display: inline-block;
+    border: 1px solid burlywood;
+    border-radius: 10px;
+
+    .login-status-info {
+       visibility: hidden;
+       width: auto;
+       background-color: #555;
+       color: #fff;
+       text-align: center;
+       padding: 5px;
+       border-radius: 6px;
+
+       /* Position the login-status-wrapper text */
+       position: absolute;
+       z-index: 1;
+       top: 135%;
+       right: 0%;
+
+       /* Fade in login-status-wrapper */
+       opacity: 0;
+       transition: opacity 0.3s;
+   }
+}
+
+// reposition when in a mobile
+.login-status-wrapper-mobile {
+    position: absolute;
+    top: 0.8rem;
+    right: 3.1rem;
+}
+
+
+/* Show the login-status-wrapper  text when you mouse over the login-status-wrapper  container */
+.login-status-wrapper:hover .login-status-info {
+    visibility: visible;
+    opacity: 1;
+}
+
+// Login button in base
+.hkb-login {
+    float: left;
+    border: 1px solid burlywood;
+    padding: 5px;
+    border-radius: 10px;
+    @include breakpoint(md) {
+        display: none;
+    }
+}
